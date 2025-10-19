@@ -6,8 +6,10 @@ import me.hgj.jetpackmvvm.demo.data.model.entity.ArticleResponse
 import me.hgj.jetpackmvvm.demo.data.model.entity.SearchResponse
 import me.hgj.jetpackmvvm.demo.data.model.entity.ShareResponse
 import rxhttp.wrapper.coroutines.Await
+import rxhttp.wrapper.coroutines.CallFlow
 import rxhttp.wrapper.param.RxHttp
 import rxhttp.wrapper.param.toAwaitResponse
+import rxhttp.wrapper.param.toFlowResponse
 
 /**
  * 作者　：hegaojian
@@ -37,8 +39,8 @@ object SearchRepository {
     /**
      * 查看他人的信息
      */
-    fun getShareUserData(id: String,pageIndex: Int): Await<ShareResponse> {
+    fun getShareUserData(id: String,pageIndex: Int): CallFlow<ShareResponse> {
         return RxHttp.get(NetUrl.Search.SHARE_USER_DATA,id,pageIndex)
-            .toAwaitResponse()
+            .toFlowResponse()
     }
 }

@@ -1,10 +1,14 @@
 package me.hgj.jetpackmvvm.core.data
 
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.kunminx.architecture.domain.message.MutableResult
-import me.hgj.jetpackmvvm.base.ui.BaseVmActivity
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
 import me.hgj.jetpackmvvm.core.net.LoadStatusEntity
 import me.hgj.jetpackmvvm.core.net.LoadingType
 import me.hgj.jetpackmvvm.ext.util.toast
@@ -88,6 +92,37 @@ fun <T> LiveData<ApiResult<T>>.obs(
 }
 
 /**
+ * 为 SharedFlow<ApiResult<T>> 添加 obs 扩展函数
+ * 支持多次触发监听，每次数据更新都会回调
+ */
+fun <T> SharedFlow<ApiResult<T>>.obs(
+    lifecycleOwner: LifecycleOwner,
+    observerBuilder: ApiResultObserver<T>.() -> Unit
+) {
+    val observer = ApiResultObserver<T>().apply(observerBuilder)
+    lifecycleOwner.lifecycleScope.launch {
+        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            this@obs.collect { result ->
+                when (result) {
+                    is ApiResult.Success -> observer.onSuccess(result.data)
+                    is ApiResult.Error -> {
+                        if (observer.onError != null) {
+                            observer.onError?.invoke(result.loadStatus)
+                        } else {
+                            // 不传 onError 时，走默认错误流程
+                            if (result.loadStatus.loadingType != LoadingType.LOADING_NULL) {
+                                result.loadStatus.msg.toast()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/**
  * 让 MutableLiveData 支持类似属性赋值的写法：
  * ```kotlin
  * liveData.postValue = data
@@ -136,4 +171,3 @@ sealed class ApiResult<out T> {
      */
     data class Error(val loadStatus: LoadStatusEntity) : ApiResult<Nothing>()
 }
-

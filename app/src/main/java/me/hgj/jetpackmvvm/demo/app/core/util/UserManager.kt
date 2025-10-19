@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import me.hgj.jetpackmvvm.core.data.postValue
 import me.hgj.jetpackmvvm.demo.data.model.entity.UserInfo
 import me.hgj.jetpackmvvm.ext.util.cacheNullable
+import rxhttp.RxHttpPlugins
+import rxhttp.wrapper.cookie.ICookieJar
 
 /**
  * 作者　：hegaojian
@@ -48,6 +50,8 @@ object UserManager {
     /** 清空用户信息 */
     fun clearUser() {
         user = null
+        val iCookieJar = RxHttpPlugins.getOkHttpClient().cookieJar as ICookieJar
+        iCookieJar.removeAllCookie()
         userLiveData.postValue = user
     }
 

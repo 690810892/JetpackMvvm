@@ -40,8 +40,6 @@ open class ResponseParser<T> : TypeParser<T> {
         if (data.errorCode == NetUrl.EXPIRED_CODE) {
             // 登录过期，清除cookie 和本地 用户信息缓存
             UserManager.clearUser()
-            val iCookieJar = RxHttpPlugins.getOkHttpClient().cookieJar as ICookieJar
-            iCookieJar.removeAllCookie()
             "登录信息已经过期，请重新登录".toast()
             throw AppException(data.errorCode.toString(), "登录信息已经过期，请重新登录")
         }

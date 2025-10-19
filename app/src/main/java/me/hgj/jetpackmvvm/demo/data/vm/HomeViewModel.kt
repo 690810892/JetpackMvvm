@@ -1,15 +1,11 @@
 package me.hgj.jetpackmvvm.demo.data.vm
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.delay
 import me.hgj.jetpackmvvm.base.vm.BaseViewModel
-import me.hgj.jetpackmvvm.core.data.postValue
 import me.hgj.jetpackmvvm.core.data.request
+import me.hgj.jetpackmvvm.core.net.LoadingType
 import me.hgj.jetpackmvvm.demo.data.model.CacheConfig
 import me.hgj.jetpackmvvm.demo.data.model.entity.BannerResponse
 import me.hgj.jetpackmvvm.demo.data.repository.request.HomeRepository
-import me.hgj.jetpackmvvm.core.net.LoadingType
 import rxhttp.safeAsync
 
 /**

@@ -49,7 +49,7 @@ class LoginActivity : BaseActivity<UserViewModel, ActivityLoginBinding>() {
                 userName.isEmpty() -> showDialogMessage("请填写账号")
                 pwd.isEmpty() -> showDialogMessage("请填写密码")
                 else -> {
-                    mViewModel.login(userName, pwd).obs(this)  {
+                    mViewModel.loginFlow(userName, pwd).obs(this)  {
                         onSuccess {
                             //请求成功
                             UserManager.saveUser(it)

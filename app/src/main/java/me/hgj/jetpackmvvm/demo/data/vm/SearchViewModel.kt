@@ -2,6 +2,7 @@ package me.hgj.jetpackmvvm.demo.data.vm
 
 import me.hgj.jetpackmvvm.base.vm.BaseViewModel
 import me.hgj.jetpackmvvm.core.data.request
+import me.hgj.jetpackmvvm.core.data.requestFlow
 import me.hgj.jetpackmvvm.demo.data.model.CacheConfig
 import me.hgj.jetpackmvvm.demo.data.repository.request.SearchRepository
 import me.hgj.jetpackmvvm.core.net.LoadingType
@@ -57,12 +58,14 @@ class SearchViewModel : BaseViewModel() {
         id: String,
         refresh: Boolean = true,
         loadingXml: Boolean = false
-    ) = request {
+    ) = requestFlow {
         if (refresh) {
             pageNo = 1
         }
         onRequest {
-            SearchRepository.getShareUserData(id, pageNo).await().also { pageNo++ }
+            val flow = SearchRepository.getShareUserData(id, pageNo)
+            pageNo++
+            flow
         }
         loadingType = if (loadingXml) LoadingType.LOADING_XML else LoadingType.LOADING_NULL
     }
