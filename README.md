@@ -16,7 +16,7 @@
 ## ✨ 框架特性
 
 - 🧠 **标准化 MVVM 架构设计**  
-  基于 ViewModel、LiveData、Repository 的分层体系，提供清晰、可维护的应用结构。
+  基于 ViewModel、LiveData、Kotlin Flow、Repository 的分层体系，提供清晰、可维护的应用结构。
 
 - ⚡ **协程驱动的响应式数据流**  
   全面采用 Kotlin Coroutines 进行异步管理，天然支持挂起函数与结构化并发。
