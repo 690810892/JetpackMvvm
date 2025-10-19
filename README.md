@@ -55,7 +55,7 @@
 
 ```gradle
 dependencies {
-    implementation 'com.github.hegaojian:JetpackMvvm:2.0.0'
+    implementation 'com.github.hegaojian:JetpackMvvm:2.0.1'
 }
 ```
 ## 📖 目录导航
